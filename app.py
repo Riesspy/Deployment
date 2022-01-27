@@ -12,8 +12,8 @@ from flask import Flask, request, jsonify, make_response # type: ignore
 app = Flask(__name__)
 api = Api(app,
         version='1.0',
-        title='White Wine Prediction',
-        description='Jedha ML production project.',
+        title='Wine_Predection',
+        description='Deployment_Project.',
 )
 
 
