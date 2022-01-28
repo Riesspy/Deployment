@@ -12,47 +12,11 @@ from flask import Flask, request, jsonify, make_response # type: ignore
 app = Flask(__name__)
 api = Api(app,
         version='1.0',
-        title='Wine_Predection',
+        title='ML in production',
         description='Deployment_Project.',
 )
 
 
-@api.route('/fetchdata', methods=["POST"])
-class FetchData(Resource):
-    """ fetch data endpoint
-    """
-
-    @classmethod
-    def post(cls) :
-        """.
-        """
-        # Check if request has a JSON content
-        if request.json:
-            # Get the JSON as dictionnary
-            req = request.get_json()
-            print(f"request : {req}")
-            print(req.keys())
-
-            # Check mandatory key
-            if "column" in req.keys():
-                # col
-                col = req["column"]
-
-                # read data
-                data = pd.read_csv("./data/winequality.csv")
-                print(type(data))
-
-                if col in data.columns :
-                    # pylint: disable=E1136
-                    data = data[col].to_list()
-                    data_json = {col: data}
-
-                    return make_response(jsonify(data_json), 200)
-
-                return jsonify({"msg": "Error : col to fetch not in dataset champs!"})
-
-            return jsonify({"msg": "Error : column needed in json post files!"})
-        return jsonify({"msg": "Error: not a JSON or no email key in your request"})
 
 
 @api.route('/predict', methods=["POST"])
