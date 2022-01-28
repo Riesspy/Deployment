@@ -20,36 +20,22 @@ api = Api(app,
 
 
 @api.route('/predict', methods=["POST"])
-class Predict(Resource):
-    """ predict endpoint.
-    """
-
-    @classmethod
-    def post(cls):
-        """.
-        """
-        # Check if request has a JSON content
-        if request.json:
-            # Get the JSON as dictionnary
-            req = request.get_json()
-            print(f"request : {req}")
-            print(req.keys())
-
-            # Check mandatory key
-            if "input" in req.keys():
-                # Load model
-                model_file = os.path.join("./model/model.joblib")
-                reg = joblib.load(model_file)
-
-                # Predict
-                prediction = reg.predict(req["input"])
-                prediction = prediction.tolist()
-
-                # return prediction
-                # return jsonify({"predict": prediction}), 200
-                data = {"predict": prediction}
-                return make_response(jsonify(data), 200)
-        return jsonify({"msg": "Error: not a JSON or no email key in your request"})
+def index():
+    # Check if request has a JSON content
+    if request.json:
+        # Get the JSON as dictionnary
+        req = request.get_json()
+        # Check mandatory key
+        if "input" in req.keys():
+            # Load model
+            classifier = joblib.load("./model/model.joblib")
+            # Predict
+            prediction = classifier.predict([req["input"]])
+            # Return the result as JSON but first we need to transform the
+            # result so as to be serializable by jsonify()
+            prediction = str(prediction[0])
+            return jsonify({"predict": prediction}), 200
+    return jsonify({"msg": "Error: not a JSON key in your request"})
 
 
 if __name__ == "__main__":
