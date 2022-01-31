@@ -1,8 +1,9 @@
 
 
 import os
-import joblib
 import pandas as pd
+import joblib
+
 from flask_restx import Resource, Api 
 from flask import Flask, request, jsonify, make_response 
 
